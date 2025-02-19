@@ -115,3 +115,79 @@ company.addEmployee(employee1); company.addEmployee(manager1); company.listEmplo
 
 console.log(company.calculatedTotalPayroll());
 // Expected ouput: 172800
+
+// Task 5 Promotions
+class Employee {
+    constructor(name, id, department, salary) {
+        this.name = name; this.id = id; this.department; this.salary = salary;
+    }
+
+    getDetails() {
+        return `Employee: ${this.name}, ID: ${this.id}, Department: ${this.department}, Salary: $${this.salary};`
+    }
+    calculateAnnualSalary() {
+        return this.salary * 12;
+    }
+}
+
+class Manager extends Employee {
+    constructor(name, id, department, salary, teamSize) {
+        super(name, id, department, salary);
+        this.teamSize = teamSize;
+    }
+
+    getDetails() {
+        return `Manager: ${this.name}, ID: ${this.id}, Department: ${this.department}, Salary: $${this.salary}, Team Size: ${this.teamSize}`;
+    }
+
+    calculateAnnualSalary() {
+        return super.calculateAnnualSalary() + this.calculateBonus();
+    }
+
+    calculateBonus() {
+        return super.calculateAnnualSalary() * .10;
+    }
+}
+
+class Company {
+    constructor(name) {
+        this.name = name; this.employees = [];
+    }
+
+    addEmployee(employee) {
+        this.employees.push(employee);
+    }
+
+    listEmployees() {
+        this.employees.forEach(employee => {
+            console.log(employee.getDetails());
+        });
+    }
+
+    calculateTotalPayroll() {
+        return this.employees.reduce((total, employee) => total + employee.calculateAnnualSalary(), );
+    }
+
+    promoteToManager(employee, teamSize) {
+        const index = this.employees.indexOf(employee); if (index !== -1) {
+            const { name, id, department, salary } = employee;
+            this.employees[index] = new Manager(name, id, department, salary,teamSize);
+        }
+    }
+}
+
+// Example usage
+const employee1 = new Employee("John Cena", 101, "Sales", 5000);
+const manager1 = new Manager("john Wright", 201, "IT", 8000, 5);
+
+const company = new comapny("TechCorp");
+company.addEmployee(employe1); company.addEmployee(manager1); company.listEmployees();
+
+// Expected output
+// "Employee: John Cena, ID: 101, Department: Sales, Salary: $5000"
+// "Manager: John Wright, ID: 201, Department: IT, Salary: $8000, Team Size: 5"
+
+company.promoteToManager(employee1, 3); company.listEmployees();
+// Expected output:
+// "Manager: John Cena, ID: 101, Department: Sales, Salary: $5000, Team Size: 3"
+// "Manager: John Wright, ID: 201, Department: IT, Salary: $8000, Team Size: 5"
